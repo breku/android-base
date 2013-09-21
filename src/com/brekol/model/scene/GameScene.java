@@ -68,7 +68,7 @@ public class GameScene extends BaseScene {
 
     @Override
     public void onBackKeyPressed() {
-        SceneManager.getInstance().loadMenuScene();
+        SceneManager.getInstance().loadMenuSceneFrom(SceneType.GAME);
     }
 
     @Override

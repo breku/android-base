@@ -70,10 +70,24 @@ public class SceneManager {
         disposeSplashScene();
     }
 
-    public void loadMenuScene() {
+
+    public void loadMenuSceneFrom(SceneType sceneType) {
         setScene(loadingScene);
-        gameScene.disposeScene();
-        ResourcesManager.getInstance().unloadGameTextures();
+        switch (sceneType) {
+            case ABOUT:
+                aboutScene.disposeScene();
+                ResourcesManager.getInstance().unloadAboutTextures();
+                break;
+            case GAME:
+                gameScene.disposeScene();
+                ResourcesManager.getInstance().unloadGameTextures();
+                break;
+            case OPTIONS:
+                ResourcesManager.getInstance().unloadOptionsTextures();
+                optionsScene.disposeScene();
+                break;
+
+        }
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ConstantsUtil.LOADING_SCENE_TIME, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
@@ -97,6 +111,35 @@ public class SceneManager {
             }
         }));
     }
+
+    public void loadAboutScene() {
+        setScene(loadingScene);
+        ResourcesManager.getInstance().unloadMenuTextures();
+        ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ConstantsUtil.LOADING_SCENE_TIME / 2, new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadAboutResources();
+                aboutScene = new AboutScene();
+                setScene(aboutScene);
+            }
+        }));
+    }
+
+    public void loadOptionsScene() {
+        setScene(loadingScene);
+        ResourcesManager.getInstance().unloadMenuTextures();
+        ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ConstantsUtil.LOADING_SCENE_TIME / 2, new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadOptionsResources();
+                optionsScene = new OptionsScene();
+                setScene(optionsScene);
+            }
+        }));
+    }
+
 
     private void disposeSplashScene() {
         ResourcesManager.getInstance().unloadSplashScreen();

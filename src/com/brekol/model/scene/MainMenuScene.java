@@ -14,7 +14,7 @@ import org.andengine.entity.sprite.Sprite;
  * User: Breku
  * Date: 21.09.13
  */
-public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemClickListener{
+public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemClickListener {
     private MenuScene menuScene;
     private final int NEW_GAME = 0;
     private final int OPTIONS = 1;
@@ -29,7 +29,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
     }
 
     private void createBackground() {
-        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, resourcesManager.getDarkBackgroundTextureRegion(), vertexBufferObjectManager));
+        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, resourcesManager.getMenuBackgroundTextureRegion(), vertexBufferObjectManager));
     }
 
     private void createButtons() {
@@ -80,14 +80,18 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         switch (pMenuItem.getID()) {
             case NEW_GAME:
                 SceneManager.getInstance().loadGameScene();
+                break;
             case OPTIONS:
-                return true;
+                SceneManager.getInstance().loadOptionsScene();
+                break;
             case ABOUT:
-                return true;
+                SceneManager.getInstance().loadAboutScene();
+                break;
             case EXIT:
                 System.exit(0);
             default:
                 return false;
         }
+        return false;
     }
 }
