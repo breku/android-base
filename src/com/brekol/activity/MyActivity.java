@@ -1,5 +1,6 @@
 package com.brekol.activity;
 
+import android.view.KeyEvent;
 import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
 import com.brekol.util.ConstantsUtil;
@@ -53,5 +54,13 @@ public class MyActivity extends BaseGameActivity {
         }));
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
+        }
+        return false;
     }
 }

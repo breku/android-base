@@ -1,6 +1,7 @@
 package com.brekol.model.scene;
 
 import com.brekol.manager.ResourcesManager;
+import com.brekol.manager.SceneManager;
 import com.brekol.util.ConstantsUtil;
 import com.brekol.util.SceneType;
 import org.andengine.entity.scene.menu.MenuScene;
@@ -78,7 +79,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
         switch (pMenuItem.getID()) {
             case NEW_GAME:
-                return true;
+                SceneManager.getInstance().loadGameScene();
             case OPTIONS:
                 return true;
             case ABOUT:

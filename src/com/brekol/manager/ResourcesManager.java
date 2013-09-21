@@ -29,10 +29,10 @@ public class ResourcesManager {
     private VertexBufferObjectManager vertexBufferObjectManager;
 
     private BitmapTextureAtlas splashTextureAtlas,fontTextureAtlas;
-    private BuildableBitmapTextureAtlas menuTextureAtlas;
+    private BuildableBitmapTextureAtlas gameTextureAtlas,menuTextureAtlas;
 
     private ITextureRegion splashTextureRegion, buttonAboutTextureRegion, buttonExitTextureRegion, buttonNewGameTextureRegion,
-            buttonOptionsTextureRegion, darkBackgroundTextureRegion;
+            buttonOptionsTextureRegion, darkBackgroundTextureRegion, waterTextureRegion;
     private Font mediumFont;
 
 
@@ -48,6 +48,34 @@ public class ResourcesManager {
         splashTextureRegion = null;
     }
 
+    public void unloadGameTextures() {
+        gameTextureAtlas.unload();
+    }
+
+    public void unloadMenuTextures() {
+        menuTextureAtlas.unload();
+    }
+
+    public void loadGameResources() {
+        loadGameGraphics();
+    }
+
+    private void loadGameGraphics() {
+
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+
+        waterTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "water.png");
+
+        try {
+            gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            gameTextureAtlas.load();
+        } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void loadSplashScreen() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
@@ -58,6 +86,10 @@ public class ResourcesManager {
     public void loadMainMenuResources() {
         loadMainMenuGraphics();
         loadMainMenuFonts();
+    }
+
+    public void loadMenuTextures() {
+        menuTextureAtlas.load();
     }
 
     private void loadMainMenuFonts() {
@@ -130,5 +162,9 @@ public class ResourcesManager {
     }
     public Font getMediumFont() {
         return mediumFont;
+    }
+
+    public ITextureRegion getWaterTextureRegion() {
+        return waterTextureRegion;
     }
 }

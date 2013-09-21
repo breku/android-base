@@ -1,10 +1,10 @@
 package com.brekol.manager;
 
-import com.brekol.model.scene.BaseScene;
-import com.brekol.model.scene.LoadingScene;
-import com.brekol.model.scene.MainMenuScene;
-import com.brekol.model.scene.SplashScene;
+import com.brekol.model.scene.*;
+import com.brekol.util.ConstantsUtil;
 import com.brekol.util.SceneType;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface;
 
 /**
@@ -62,13 +62,40 @@ public class SceneManager {
     }
 
 
-
     public void createMainMenuScene() {
         ResourcesManager.getInstance().loadMainMenuResources();
         menuScene = new MainMenuScene();
         loadingScene = new LoadingScene();
         setScene(menuScene);
         disposeSplashScene();
+    }
+
+    public void loadMenuScene() {
+        setScene(loadingScene);
+        gameScene.disposeScene();
+        ResourcesManager.getInstance().unloadGameTextures();
+        ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ConstantsUtil.LOADING_SCENE_TIME, new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadMenuTextures();
+                setScene(menuScene);
+            }
+        }));
+    }
+
+    public void loadGameScene() {
+        setScene(loadingScene);
+        ResourcesManager.getInstance().unloadMenuTextures();
+        ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ConstantsUtil.LOADING_SCENE_TIME, new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadGameResources();
+                gameScene = new GameScene();
+                setScene(gameScene);
+            }
+        }));
     }
 
     private void disposeSplashScene() {
