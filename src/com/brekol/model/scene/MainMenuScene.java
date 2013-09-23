@@ -38,21 +38,21 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
         final IMenuItem newGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(NEW_GAME, ResourcesManager.getInstance().getButtonNewGameTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
         final IMenuItem aboutItem = new ScaleMenuItemDecorator(new SpriteMenuItem(ABOUT, ResourcesManager.getInstance().getButtonAboutTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem optionsItem = new ScaleMenuItemDecorator(new SpriteMenuItem(OPTIONS, ResourcesManager.getInstance().getButtonOptionsTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+//        final IMenuItem optionsItem = new ScaleMenuItemDecorator(new SpriteMenuItem(OPTIONS, ResourcesManager.getInstance().getButtonOptionsTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
         final IMenuItem exitItem = new ScaleMenuItemDecorator(new SpriteMenuItem(EXIT, ResourcesManager.getInstance().getButtonExitTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
 
         menuScene.addMenuItem(newGameItem);
-        menuScene.addMenuItem(optionsItem);
+//        menuScene.addMenuItem(optionsItem);
         menuScene.addMenuItem(aboutItem);
         menuScene.addMenuItem(exitItem);
 
         menuScene.buildAnimations();
         menuScene.setBackgroundEnabled(false);
 
-        aboutItem.setPosition(ConstantsUtil.SCREEN_WIDTH / 8, ConstantsUtil.SCREEN_HEIGHT / 3);
-        newGameItem.setPosition(ConstantsUtil.SCREEN_WIDTH / 3, ConstantsUtil.SCREEN_HEIGHT * 3 / 4);
-        optionsItem.setPosition(ConstantsUtil.SCREEN_WIDTH * 2 / 3, ConstantsUtil.SCREEN_HEIGHT * 3 / 4);
-        exitItem.setPosition(ConstantsUtil.SCREEN_WIDTH * 7 / 8, ConstantsUtil.SCREEN_HEIGHT / 3);
+        newGameItem.setPosition(400,360);
+        aboutItem.setPosition(200, 160);
+//        optionsItem.setPosition(ConstantsUtil.SCREEN_WIDTH * 2 / 3, ConstantsUtil.SCREEN_HEIGHT * 3 / 4);
+        exitItem.setPosition(600,160);
 
         menuScene.setOnMenuItemClickListener(this);
 
