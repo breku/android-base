@@ -2,18 +2,11 @@ package com.brekol.model.scene;
 
 import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
-import com.brekol.model.loader.MainLevelLoader;
+import com.brekol.matcher.ClassTouchAreaMacher;
 import com.brekol.util.ConstantsUtil;
-import com.brekol.util.LevelType;
 import com.brekol.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
-import org.andengine.entity.text.TextOptions;
-import org.andengine.util.adt.align.HorizontalAlign;
-import org.andengine.util.level.EntityLoader;
-import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
-import org.andengine.util.level.simple.SimpleLevelLoader;
 
 /**
  * User: Breku
@@ -21,54 +14,48 @@ import org.andengine.util.level.simple.SimpleLevelLoader;
  */
 public class GameScene extends BaseScene {
 
-
     private HUD gameHUD;
-    private Text scoreText;
-    private int score;
-    private SimpleLevelLoader levelLoader;
-    private EntityLoader mainLevelLoader;
+
+    /**
+     * @param objects objects[0] - GameType
+     */
+    public GameScene(Object... objects) {
+        super(objects);
+    }
+
 
     @Override
-    public void createScene() {
-        init();
+    public void createScene(Object... objects) {
+        init(objects);
         createBackground();
         createHUD();
-        loadLevel(LevelType.EASY.getID());
-    }
-
-    private void init() {
-        mainLevelLoader = new MainLevelLoader<SimpleLevelEntityLoaderData>(this, ConstantsUtil.TAG_LEVEL);
-        levelLoader = new SimpleLevelLoader(vertexBufferObjectManager);
-
-    }
-
-    private void loadLevel(int levelID) {
-
-        levelLoader.registerEntityLoader(mainLevelLoader);
-        levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
-    }
-
-    private void createHUD() {
-        gameHUD = new HUD();
-        scoreText = new Text(130, 445, resourcesManager.getMediumFont(), "Score: 999999", new TextOptions(HorizontalAlign.LEFT), vertexBufferObjectManager);
-        scoreText.setText("Score: 0");
-
-        gameHUD.attachChild(scoreText);
-        camera.setHUD(gameHUD);
-    }
-
-    private void createBackground() {
-        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, ResourcesManager.getInstance().getWaterTextureRegion(), vertexBufferObjectManager));
-    }
-
-    private void addToScore() {
-        score++;
-        scoreText.setText("Score: " + score);
     }
 
     @Override
     public void onBackKeyPressed() {
         SceneManager.getInstance().loadMenuSceneFrom(SceneType.GAME);
+    }
+
+    private void init(Object... objects) {
+        clearUpdateHandlers();
+        clearTouchAreas();
+    }
+
+
+    private void createHUD() {
+        gameHUD = new HUD();
+        camera.setHUD(gameHUD);
+    }
+
+    private void createBackground() {
+        unregisterTouchAreas(new ClassTouchAreaMacher(Sprite.class));
+        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2,
+                ResourcesManager.getInstance().getBackgroundGameTextureRegion(), vertexBufferObjectManager));
+    }
+
+    @Override
+    protected void onManagedUpdate(float pSecondsElapsed) {
+        super.onManagedUpdate(pSecondsElapsed);
     }
 
     @Override
@@ -78,6 +65,7 @@ public class GameScene extends BaseScene {
 
     @Override
     public void disposeScene() {
+        gameHUD.clearChildScene();
         camera.setHUD(null);
         camera.setCenter(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2);
         camera.setChaseEntity(null);

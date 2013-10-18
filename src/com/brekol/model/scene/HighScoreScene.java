@@ -1,5 +1,6 @@
 package com.brekol.model.scene;
 
+import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
 import com.brekol.util.ConstantsUtil;
 import com.brekol.util.SceneType;
@@ -10,9 +11,17 @@ import org.andengine.input.touch.TouchEvent;
 
 /**
  * User: Breku
- * Date: 21.09.13
+ * Date: 06.10.13
  */
-public class AboutScene extends BaseScene implements IOnSceneTouchListener {
+public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
+    /**
+     * Constructor
+     *
+     * @param objects object[0] - HighScore
+     */
+    public HighScoreScene(Object... objects) {
+        super(objects);
+    }
 
     @Override
     public void createScene(Object... objects) {
@@ -21,18 +30,19 @@ public class AboutScene extends BaseScene implements IOnSceneTouchListener {
     }
 
     private void createBackground() {
-        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, resourcesManager.getAboutBackgroundTextureRegion(), vertexBufferObjectManager));
-        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2, resourcesManager.getAboutTextureRegion(), vertexBufferObjectManager));
+        attachChild(new Sprite(ConstantsUtil.SCREEN_WIDTH / 2, ConstantsUtil.SCREEN_HEIGHT / 2,
+                ResourcesManager.getInstance().getRecordBackgroundTextureRegion(), vertexBufferObjectManager));
+
     }
 
     @Override
     public void onBackKeyPressed() {
-        SceneManager.getInstance().loadMenuSceneFrom(SceneType.ABOUT);
+        SceneManager.getInstance().loadMenuSceneFrom(SceneType.RECORDS);
     }
 
     @Override
     public SceneType getSceneType() {
-        return SceneType.ABOUT;
+        return SceneType.RECORDS;
     }
 
     @Override
@@ -42,7 +52,7 @@ public class AboutScene extends BaseScene implements IOnSceneTouchListener {
     @Override
     public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
         if (pSceneTouchEvent.isActionUp()) {
-            SceneManager.getInstance().loadMenuSceneFrom(SceneType.ABOUT);
+            SceneManager.getInstance().loadMenuSceneFrom(SceneType.RECORDS);
         }
         return false;
     }
